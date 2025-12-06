@@ -1,0 +1,25 @@
+{
+  "config": {
+    "chunk_size": 500,
+    "chunk_overlap": 100,
+    "vector_db": "FAISS",
+    "retrieval_k": 3
+  },
+  "results": [
+    {
+      "question": "What are the core courses required for a computer science undergraduate degree?",
+      "answer": "0 GPA in major courses - Minimum C grade in GE courses including MATH 150A, MATH 338 - Complete at least 120 total units - Apply for graduation after completing 90 units The Bachelor of Science in Computer Science at CSUF is accredited by ABET. The first three courses are CPSC 120, 121, and 131. The requirements for the B.",
+      "num_chunks_retrieved": 3
+    },
+    {
+      "question": "Describe the rules for completing a senior project, including prerequisites.",
+      "answer": "Senior Capstone Project (CPSC 491): - Prerequisite: CPSC 490 (Senior Seminar) - Students work on a significant software project - Demonstrates comprehensive skills acquired in the program - Must complete all prerequisite chains before enrollment Graduation Requirements: - Complete all 6 requirement categories - Minimum 2. These lay the foundation for CS theory and practice. The requirements for the B.",
+      "num_chunks_retrieved": 3
+    },
+    {
+      "question": "What are the degree requirements for graduation?",
+      "answer": "The requirements for the B. CS are detailed in the University Catalog. The requirements fit into 6 categories: 1.",
+      "num_chunks_retrieved": 3
+    }
+  ]
+}
