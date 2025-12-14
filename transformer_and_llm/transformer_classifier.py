@@ -1,14 +1,3 @@
-"""
-Assignment 4 - Part 1: Transformer Encoder-based Classifier for Sentiment Analysis
-Built from scratch using PyTorch (no pretrained models)
-
-Design Decisions:
-- Positional Embedding: Learnable positional embeddings (simpler, works well for fixed-length sequences)
-- Transformer Encoder: 2 attention heads, 256 feedforward dim, 2 encoder layers, Pre-LN (more stable training)
-- Classification Head: Mean pooling over sequence (robust for variable-length inputs)
-- Hyperparameters: batch_size=16, epochs=50 (small dataset requires more epochs)
-"""
-
 import os
 import ast
 import math
@@ -23,10 +12,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 
-# =============================================================================
-# Transformer Components (Built from Scratch)
-# =============================================================================
-
+# Transformer Components
 class PositionalEncoding(nn.Module):
     """
     Learnable positional embeddings.
@@ -76,13 +62,6 @@ class MultiHeadSelfAttention(nn.Module):
         self.dropout = nn.Dropout(dropout)
         
     def forward(self, x: torch.Tensor, mask: torch.Tensor = None) -> torch.Tensor:
-        """
-        Args:
-            x: Input tensor of shape (batch_size, seq_len, d_model)
-            mask: Optional attention mask
-        Returns:
-            Output tensor of shape (batch_size, seq_len, d_model)
-        """
         batch_size, seq_len, _ = x.shape
         
         # Linear projections
@@ -121,9 +100,6 @@ class MultiHeadSelfAttention(nn.Module):
 
 
 class FeedForward(nn.Module):
-    """
-    Position-wise Feed-Forward Network.
-    """
     def __init__(self, d_model: int, d_ff: int, dropout: float = 0.1):
         super().__init__()
         self.linear1 = nn.Linear(d_model, d_ff)
@@ -140,10 +116,6 @@ class FeedForward(nn.Module):
 
 
 class TransformerEncoderLayer(nn.Module):
-    """
-    Single Transformer Encoder Layer with Pre-LN (Layer Norm before attention/FFN).
-    Pre-LN is more stable for training compared to Post-LN.
-    """
     def __init__(self, d_model: int, num_heads: int, d_ff: int, dropout: float = 0.1):
         super().__init__()
         self.self_attention = MultiHeadSelfAttention(d_model, num_heads, dropout)
@@ -168,9 +140,6 @@ class TransformerEncoderLayer(nn.Module):
 
 
 class TransformerEncoder(nn.Module):
-    """
-    Stack of Transformer Encoder Layers.
-    """
     def __init__(self, num_layers: int, d_model: int, num_heads: int, d_ff: int, dropout: float = 0.1):
         super().__init__()
         self.layers = nn.ModuleList([
@@ -186,24 +155,6 @@ class TransformerEncoder(nn.Module):
 
 
 class TransformerClassifier(nn.Module):
-    """
-    Transformer Encoder-based Classifier for Sentiment Analysis.
-    
-    Architecture:
-    - Input projection (embedding_dim -> d_model)
-    - Positional encoding (learnable)
-    - Transformer encoder stack
-    - Mean pooling (aggregate sequence representations)
-    - Classification head
-    
-    Design choices:
-    - Positional Embedding: Learnable (simpler, effective for fixed-length)
-    - Attention Heads: 2 (sufficient for our small dataset)
-    - FFN Dimension: 256 (4x d_model is standard)
-    - Encoder Layers: 2 (prevents overfitting on small data)
-    - Layer Norm: Pre-LN (more stable training)
-    - Classification: Mean pooling (more robust than CLS token for small data)
-    """
     def __init__(
         self,
         input_dim: int = 100,      # Dimension of input embeddings (Skip-gram)
@@ -238,13 +189,6 @@ class TransformerClassifier(nn.Module):
         )
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        Args:
-            x: Input tensor of shape (batch_size, seq_len, input_dim)
-               For our case, seq_len=1 since we have document-level embeddings
-        Returns:
-            Logits of shape (batch_size, num_classes)
-        """
         # Project to transformer dimension
         x = self.input_projection(x)  # (batch_size, seq_len, d_model)
         
@@ -263,15 +207,8 @@ class TransformerClassifier(nn.Module):
         return logits
 
 
-# =============================================================================
 # Data Loading and Training
-# =============================================================================
-
 def load_vectorized_dataset(csv_path: str) -> Tuple[np.ndarray, np.ndarray]:
-    """
-    Load vectorized dataset with columns: date, symbol, news_vector, impact_score
-    Returns (X, y) where X is embeddings and y is binary labels.
-    """
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"Dataset not found: {csv_path}")
     
@@ -295,11 +232,6 @@ def train_transformer_classifier(
     device: str = None,
     verbose: bool = True
 ) -> Tuple[TransformerClassifier, float, str]:
-    """
-    Train the Transformer classifier.
-    
-    Returns: (trained_model, accuracy, classification_report_str)
-    """
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
     
@@ -446,9 +378,6 @@ def train_transformer_classifier(
 
 
 def compare_with_mlp(transformer_acc: float, mlp_acc: float = None):
-    """
-    Compare Transformer performance with MLP baseline from Assignment 3.
-    """
     print("\n" + "="*60)
     print("COMPARISON: Transformer vs MLP (Assignment 3)")
     print("="*60)
@@ -491,9 +420,7 @@ For improved Transformer performance, consider:
 """)
 
 
-def main():
-    """Main function to train and evaluate the Transformer classifier."""
-    
+def main():    
     print("="*60)
     print("TRANSFORMER CLASSIFIER FOR SENTIMENT ANALYSIS")
     print("="*60)
@@ -537,9 +464,6 @@ def main():
     print(f"\nModel saved to {model_save_path}")
     
     # Compare with MLP baseline
-    # Note: Replace this with actual MLP accuracy from Assignment 3
-    # Based on the code structure, the MLP likely achieved similar results
-    # You should update this with your actual Assignment 3 results
     mlp_acc = None  # Set to your Assignment 3 accuracy if known
     compare_with_mlp(transformer_acc, mlp_acc)
     

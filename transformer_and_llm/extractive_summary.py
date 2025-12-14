@@ -1,15 +1,3 @@
-"""
-Assignment 4 - Part 2.1: Extractive Summarization using Sentence Similarity
-
-Method Description:
-- Represent each sentence using Skip-gram word embeddings (mean pooling)
-- Compute pairwise cosine similarity between all sentences
-- Select the most representative sentences (highest average similarity to others)
-- This identifies sentences that capture the main themes of the document
-
-No training is required - this is purely similarity-based extraction.
-"""
-
 import os
 import re
 from typing import List, Tuple
@@ -36,7 +24,6 @@ except ImportError:
 
 
 def tokenize(text: str) -> List[str]:
-    """Tokenize text into words, removing stopwords."""
     if HAS_GENSIM:
         tokens = [t for t in simple_preprocess(text) if t not in STOPWORDS]
     else:
@@ -48,7 +35,6 @@ def tokenize(text: str) -> List[str]:
 
 
 def split_sentences(text: str) -> List[str]:
-    """Split text into sentences."""
     # Handle common sentence boundaries
     # Split on . ! ? followed by space or end of string
     sentences = re.split(r'(?<=[.!?])\s+', text)
@@ -58,10 +44,6 @@ def split_sentences(text: str) -> List[str]:
 
 
 def build_word_embeddings(tokenized_docs: List[List[str]], embedding_dim: int = 100) -> dict:
-    """
-    Build simple word embeddings using co-occurrence statistics.
-    This is a lightweight alternative when pretrained embeddings aren't available.
-    """
     # Count word frequencies
     word_counts = Counter()
     for doc in tokenized_docs:
@@ -82,13 +64,6 @@ def build_word_embeddings(tokenized_docs: List[List[str]], embedding_dim: int = 
 
 
 def sentence_embedding(sentence: str, word_embeddings: dict, embedding_dim: int = 100) -> np.ndarray:
-    """
-    Compute sentence embedding by averaging word embeddings.
-    
-    Strategy: Mean pooling of word vectors
-    - Simple and effective for extractive summarization
-    - Captures overall semantic content of the sentence
-    """
     tokens = tokenize(sentence)
     
     if not tokens:
@@ -250,10 +225,6 @@ def load_aggregated_news(path: str) -> pd.DataFrame:
 
 
 def build_embeddings_from_corpus(df: pd.DataFrame, embedding_dim: int = 100) -> dict:
-    """
-    Build word embeddings from the news corpus.
-    In a real scenario, this would load pretrained Skip-gram embeddings.
-    """
     # Tokenize all documents
     all_tokens = []
     for text in df['news'].fillna(''):

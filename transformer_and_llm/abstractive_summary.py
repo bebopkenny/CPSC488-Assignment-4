@@ -1,16 +1,3 @@
-"""
-Assignment 4 - Part 2.2: Abstractive Summarization using Transformer Encoder-Decoder
-
-This implements an article-to-headline generation model using PyTorch's nn.Transformer.
-The model learns to generate headlines from article content.
-
-Architectural Choices:
-- Positional Embedding: Sinusoidal (classic choice, no additional parameters)
-- Encoder: 2 heads, 256 FFN dim, 2 layers, Pre-LN
-- Decoder: 2 heads, 256 FFN dim, 2 layers, Pre-LN, with autoregressive masking
-- Generation: Greedy decoding (simple, deterministic)
-"""
-
 import os
 import re
 import math
@@ -24,14 +11,8 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence
 
-
-# =============================================================================
 # Tokenization and Vocabulary
-# =============================================================================
-
-class SimpleTokenizer:
-    """Simple word-level tokenizer with special tokens."""
-    
+class SimpleTokenizer:    
     PAD_TOKEN = "<PAD>"
     SOS_TOKEN = "<SOS>"
     EOS_TOKEN = "<EOS>"
@@ -44,7 +25,6 @@ class SimpleTokenizer:
         self.vocab_size = 0
         
     def build_vocab(self, texts: List[str]):
-        """Build vocabulary from list of texts."""
         # Count word frequencies
         word_counts = Counter()
         for text in texts:
@@ -66,14 +46,12 @@ class SimpleTokenizer:
         print(f"Vocabulary size: {self.vocab_size}")
         
     def _tokenize(self, text: str) -> List[str]:
-        """Basic tokenization."""
         text = text.lower()
         # Keep alphanumeric and some punctuation
         tokens = re.findall(r'\b\w+\b|[.,!?;]', text)
         return tokens
     
     def encode(self, text: str, add_special_tokens: bool = True) -> List[int]:
-        """Convert text to token indices."""
         tokens = self._tokenize(text)
         indices = [self.word2idx.get(t, self.word2idx[self.UNK_TOKEN]) for t in tokens]
         
@@ -83,7 +61,6 @@ class SimpleTokenizer:
         return indices
     
     def decode(self, indices: List[int], skip_special_tokens: bool = True) -> str:
-        """Convert token indices back to text."""
         special = {self.word2idx[self.PAD_TOKEN], 
                    self.word2idx[self.SOS_TOKEN], 
                    self.word2idx[self.EOS_TOKEN]}
@@ -108,14 +85,8 @@ class SimpleTokenizer:
     def eos_idx(self) -> int:
         return self.word2idx[self.EOS_TOKEN]
 
-
-# =============================================================================
 # Dataset
-# =============================================================================
-
-class SummarizationDataset(Dataset):
-    """Dataset for article-headline pairs."""
-    
+class SummarizationDataset(Dataset):    
     def __init__(self, articles: List[str], headlines: List[str], tokenizer: SimpleTokenizer,
                  max_article_len: int = 128, max_headline_len: int = 32):
         self.articles = articles
@@ -143,7 +114,6 @@ class SummarizationDataset(Dataset):
 
 
 def collate_fn(batch, pad_idx):
-    """Collate function for DataLoader with padding."""
     src_batch, tgt_batch = zip(*batch)
     
     src_padded = pad_sequence(src_batch, batch_first=True, padding_value=pad_idx)
@@ -151,22 +121,8 @@ def collate_fn(batch, pad_idx):
     
     return src_padded, tgt_padded
 
-
-# =============================================================================
-# Positional Encoding (Sinusoidal)
-# =============================================================================
-
+# Positional Encoding 
 class SinusoidalPositionalEncoding(nn.Module):
-    """
-    Sinusoidal Positional Encoding (Vaswani et al., 2017).
-    
-    Uses sine and cosine functions of different frequencies.
-    Advantages:
-    - No learnable parameters
-    - Can extrapolate to longer sequences
-    - Classic, well-understood approach
-    """
-    
     def __init__(self, d_model: int, max_len: int = 5000, dropout: float = 0.1):
         super().__init__()
         self.dropout = nn.Dropout(p=dropout)
@@ -183,35 +139,11 @@ class SinusoidalPositionalEncoding(nn.Module):
         self.register_buffer('pe', pe)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        Args:
-            x: Tensor of shape (batch_size, seq_len, d_model)
-        """
         x = x + self.pe[:, :x.size(1), :]
         return self.dropout(x)
 
-
-# =============================================================================
 # Transformer Encoder-Decoder for Summarization
-# =============================================================================
-
 class AbstractiveSummarizer(nn.Module):
-    """
-    Transformer Encoder-Decoder for Abstractive Summarization.
-    
-    Architecture:
-    - Embedding layer (shared between encoder and decoder)
-    - Sinusoidal positional encoding
-    - PyTorch nn.Transformer (encoder-decoder)
-    - Linear output projection
-    
-    Key Design Choices:
-    - Positional Encoding: Sinusoidal (no extra parameters)
-    - Encoder: 2 heads, 256 FFN, 2 layers
-    - Decoder: 2 heads, 256 FFN, 2 layers with causal masking
-    - Generation: Greedy decoding
-    """
-    
     def __init__(
         self,
         vocab_size: int,
@@ -253,39 +185,19 @@ class AbstractiveSummarizer(nn.Module):
         self._init_weights()
         
     def _init_weights(self):
-        """Initialize weights with Xavier uniform."""
         for p in self.parameters():
             if p.dim() > 1:
                 nn.init.xavier_uniform_(p)
     
     def generate_square_subsequent_mask(self, sz: int, device: torch.device) -> torch.Tensor:
-        """
-        Generate causal mask for autoregressive decoding.
-        
-        Autoregressive Masking Explanation:
-        - The decoder must not attend to future tokens during training
-        - This mask sets future positions to -inf, making their attention weights 0
-        - Ensures the model only uses past context when predicting each token
-        """
         mask = torch.triu(torch.ones(sz, sz, device=device), diagonal=1)
         mask = mask.masked_fill(mask == 1, float('-inf'))
         return mask
     
     def create_padding_mask(self, seq: torch.Tensor) -> torch.Tensor:
-        """Create mask for padding tokens."""
         return (seq == self.pad_idx)
     
     def forward(self, src: torch.Tensor, tgt: torch.Tensor) -> torch.Tensor:
-        """
-        Forward pass for training.
-        
-        Args:
-            src: Source sequence (batch_size, src_len)
-            tgt: Target sequence (batch_size, tgt_len)
-        
-        Returns:
-            Output logits (batch_size, tgt_len, vocab_size)
-        """
         # Create masks
         tgt_mask = self.generate_square_subsequent_mask(tgt.size(1), tgt.device)
         src_padding_mask = self.create_padding_mask(src)
@@ -318,18 +230,6 @@ class AbstractiveSummarizer(nn.Module):
         sos_idx: int = 1,
         eos_idx: int = 2
     ) -> torch.Tensor:
-        """
-        Generate headline using greedy decoding.
-        
-        Generation Strategy: Greedy Decoding
-        - At each step, select the token with highest probability
-        - Simple and deterministic
-        - Fast inference
-        
-        Alternative strategies (not implemented):
-        - Beam Search: Keep top-k candidates, better quality
-        - Top-k/Top-p Sampling: More diverse outputs
-        """
         self.eval()
         device = src.device
         batch_size = src.size(0)
@@ -370,10 +270,7 @@ class AbstractiveSummarizer(nn.Module):
         return tgt
 
 
-# =============================================================================
 # Training
-# =============================================================================
-
 def train_summarizer(
     model: AbstractiveSummarizer,
     train_loader: DataLoader,
@@ -381,9 +278,7 @@ def train_summarizer(
     learning_rate: float = 1e-3,
     device: str = "cpu",
     verbose: bool = True
-) -> List[float]:
-    """Train the abstractive summarization model."""
-    
+) -> List[float]:    
     model = model.to(device)
     criterion = nn.CrossEntropyLoss(ignore_index=model.pad_idx)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -428,18 +323,8 @@ def train_summarizer(
     
     return losses
 
-
-# =============================================================================
 # Main Function
-# =============================================================================
-
 def create_article_headline_pairs(df: pd.DataFrame, num_pairs: int = 50) -> Tuple[List[str], List[str]]:
-    """
-    Create article-headline pairs from the dataset.
-    
-    For this assignment, we treat the concatenated news as "articles"
-    and extract a shorter version as the "headline".
-    """
     articles = []
     headlines = []
     
@@ -618,24 +503,6 @@ def main():
     print("\n" + "="*60)
     print("COMPARISON: Extractive vs Abstractive")
     print("="*60)
-    print("""
-    For a fair comparison, we compare both methods on the same article.
-    
-    Extractive Summary:
-    - Selects existing sentences from the article
-    - Preserves original wording
-    - Limited to content in the source
-    
-    Abstractive Summary:
-    - Generates new text
-    - Can paraphrase and condense
-    - May introduce novel phrasing
-    
-    Evaluation Criteria:
-    1. Similarity to headline: How close is the summary to the actual headline?
-    2. Accuracy: Does it capture the main point?
-    3. Fluency: Is the generated text grammatical?
-    """)
     
     return model, tokenizer, losses
 

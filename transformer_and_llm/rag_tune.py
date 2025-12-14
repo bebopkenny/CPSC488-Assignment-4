@@ -1,16 +1,3 @@
-"""
-Assignment 4 - Part 4: Retrieval-Augmented Generation (RAG) with TinyLlama
-
-This script implements a RAG pipeline for question-answering over the CS handbook.
-
-RAG Pipeline:
-1. Document Chunking: Split handbook into manageable pieces
-2. Embedding: Convert chunks to vector representations
-3. Indexing: Store in vector database for fast retrieval
-4. Retrieval: Find relevant chunks for a query
-5. Generation: Use LLM to generate answer from retrieved context
-"""
-
 import os
 import re
 import json
@@ -19,32 +6,9 @@ from dataclasses import dataclass
 import numpy as np
 
 
-# =============================================================================
 # Configuration
-# =============================================================================
-
 @dataclass
 class RAGConfig:
-    """
-    RAG System Configuration.
-    
-    Chunk Size: 500 characters
-    - Balances specificity and context
-    - Larger chunks = more context but less precise retrieval
-    - Smaller chunks = more precise but may lose context
-    
-    Chunk Overlap: 100 characters
-    - Prevents information loss at boundaries
-    - Helps with questions spanning chunk boundaries
-    
-    Vector Database: FAISS (Facebook AI Similarity Search)
-    - Efficient similarity search for millions of vectors
-    - Supports various index types (flat, IVF, HNSW)
-    
-    Retrieval Strategy:
-    - K value: 3 (retrieve top 3 most similar chunks)
-    - Scoring: Cosine similarity
-    """
     chunk_size: int = 500
     chunk_overlap: int = 100
     vector_db: str = "FAISS"
@@ -59,7 +23,6 @@ class RAGConfig:
 # =============================================================================
 
 def extract_pdf_text(pdf_path: str) -> str:
-    """Extract text from PDF."""
     try:
         import fitz
         doc = fitz.open(pdf_path)
@@ -73,7 +36,6 @@ def extract_pdf_text(pdf_path: str) -> str:
 
 
 def get_sample_handbook_content() -> str:
-    """Sample handbook content for demonstration."""
     return """
     The requirements for the B.S. CS are detailed in the University Catalog. The requirements fit into 6 categories:
     
@@ -115,11 +77,6 @@ def get_sample_handbook_content() -> str:
 
 
 def chunk_document(text: str, chunk_size: int = 500, overlap: int = 100) -> List[Dict]:
-    """
-    Split document into overlapping chunks.
-    
-    Returns list of chunks with metadata.
-    """
     # Clean text
     text = re.sub(r'\s+', ' ', text).strip()
     
@@ -151,29 +108,15 @@ def chunk_document(text: str, chunk_size: int = 500, overlap: int = 100) -> List
     
     return chunks
 
-
-# =============================================================================
 # Simple Vector Store (FAISS-like)
-# =============================================================================
-
 class SimpleVectorStore:
-    """
-    Simple vector store for demonstration.
-    In production, use FAISS or ChromaDB.
-    
-    Vector Database: FAISS (simulated)
-    - Stores document embeddings
-    - Supports cosine similarity search
-    - Efficient for up to millions of vectors
-    """
-    
     def __init__(self):
         self.vectors = []
         self.documents = []
         self.dim = None
         
     def add(self, vectors: np.ndarray, documents: List[Dict]):
-        """Add vectors and their corresponding documents."""
+        # Add vectors and their corresponding documents
         if self.dim is None:
             self.dim = vectors.shape[1]
         
@@ -182,13 +125,6 @@ class SimpleVectorStore:
             self.documents.append(doc)
     
     def search(self, query_vector: np.ndarray, k: int = 3) -> List[Tuple[Dict, float]]:
-        """
-        Search for k most similar documents.
-        
-        Retrieval Strategy:
-        - K value: Number of documents to retrieve (default=3)
-        - Scoring: Cosine similarity between query and document vectors
-        """
         if not self.vectors:
             return []
         
@@ -214,17 +150,8 @@ class SimpleVectorStore:
         
         return results
 
-
-# =============================================================================
 # Simple Embedder
-# =============================================================================
-
 class SimpleEmbedder:
-    """
-    Simple TF-IDF based embedder for demonstration.
-    In production, use SentenceTransformer or similar.
-    """
-    
     def __init__(self, dim: int = 128):
         self.dim = dim
         self.vocab = {}

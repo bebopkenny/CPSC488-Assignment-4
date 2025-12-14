@@ -1,21 +1,3 @@
-"""
-Assignment 4: Transformer and LLMs
-Main entry point that runs all sections of the assignment.
-
-Sections:
-1. Transformer Classifier for Sentiment Analysis
-2. Text Summarization (Extractive and Abstractive)
-3. Parameter-Efficient Fine-tuning
-4. Retrieval-Augmented Generation (RAG)
-
-Usage:
-    python main.py           # Run all sections
-    python main.py --part 1  # Run only Part 1
-    python main.py --part 2  # Run only Part 2
-    python main.py --part 3  # Run only Part 3
-    python main.py --part 4  # Run only Part 4
-"""
-
 import sys
 import argparse
 
@@ -71,7 +53,6 @@ def run_part2():
 
 
 def run_part3():
-    """Run Part 3: Parameter-Efficient Fine-tuning."""
     print("\n" + "="*70)
     print("PART 3: PARAMETER-EFFICIENT FINE-TUNING")
     print("="*70 + "\n")
@@ -101,7 +82,6 @@ def run_part4():
 
 
 def main():
-    """Main entry point."""
     parser = argparse.ArgumentParser(
         description="Assignment 4: Transformer and LLMs"
     )
