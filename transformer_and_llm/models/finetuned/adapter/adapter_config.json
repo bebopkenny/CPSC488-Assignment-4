@@ -1,0 +1,12 @@
+{
+  "adapter_layers": 22,
+  "adapter_len": 10,
+  "auto_mapping": null,
+  "base_model_name_or_path": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "inference_mode": true,
+  "peft_type": "ADAPTION_PROMPT",
+  "peft_version": "0.18.0",
+  "revision": null,
+  "target_modules": "self_attn",
+  "task_type": "CAUSAL_LM"
+}

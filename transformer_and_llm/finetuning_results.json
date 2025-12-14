@@ -1,0 +1,33 @@
+{
+  "methods": {
+    "lora": {
+      "trainable_params": 1126400,
+      "answers": [
+        "The core courses required for a computer science undergraduate degree include:\n- Algorithms and Data Structures (CS 106B, CS 203A, CS 205A)\n- Computer Organization and Architecture (CS 204A, CS 207A)\n- Programming Languages (CS 208A, CS 210A, CS 211A)\n- Operating Systems (CS 212A, CS 213A, CS 214A)\n- Artificial Intelligence (CS 215A, CS 216A, CS 217A)\n- Database Management Systems (CS 219A, CS 220A, CS 221A)\n- Networking (CS 222A, CS 223A, CS 224A)\n- Software Engineering (CS 225A, CS 226A, CS 227A)\n- Computer Graphics (CS 230A, CS 231A, CS 232A)",
+        "The requirements for completing a senior project in the computer science program at my university are as follows:\n\n1. A minimum of 30 credit hours is required to complete the degree.\n2. Students must have completed all coursework and passed all exams for the major before they can begin working on their senior project.\n3. Students must also have a GPA of at least 3.0 in all courses taken during their undergraduate studies.\n4. Students must submit a proposal for their senior project to their advisor no later than the end of their junior year.\n5. Students must then work with their advisor to develop a detailed plan for their project, which should include a timeline, budget, and a list of necessary resources.\n6. Once the proposal has been approved by the department, students must start working on their project immediately.\n7. Students must present their final product to their advisor and faculty members at the end of their senior year.\n8. Students must also participate in a senior project seminar that covers topics such as project management, teamwork, and communication.\n9. Students must also attend a senior project presentation where they will share their project",
+        "The degree requirements for graduation at CSU, Chico are as follows:\n- Bachelor of Arts (BA) Degree: 120 semester hours (36 credit hours)\n- Bachelor of Science (BS) Degree: 124 semester hours (40 credit hours)\n- Master of Arts (MA) Degree: 30 semester hours (9 credit hours)\n- Doctor of Philosophy (PhD) Degree: 72 semester hours (24 credit hours)\nThe Bachelor of Arts (BA) and Bachelor of Science (BS) degrees require a minimum of 120 semester hours. The Master of Arts (MA) degree requires a minimum of 30 semester hours, while the Doctor of Philosophy (PhD) degree requires a minimum of 72 semester hours.\nGraduate students who complete a BA or BS degree in the College of Letters and Sciences must take additional courses to fulfill their major requirements. Students who complete an MA or PhD degree must take additional courses to fulfill their program requirements.\nFor more information about degree requirements, please visit the CSU,"
+      ]
+    },
+    "prefix": {
+      "trainable_params": 2963200,
+      "answers": [
+        "2012nd article\nend.\n<| . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+        "2012nd article\nend. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+        "5. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ."
+      ]
+    },
+    "adapter": {
+      "trainable_params": 450582,
+      "answers": [
+        "The core courses required for a computer science undergraduate degree at UC Berkeley include:\n- CS 185: Introduction to Computer Science (3 credits)\n- CS 249: Algorithms and Data Structures (3 credits)\n- CS 260: Operating Systems (3 credits)\n- CS 270: Programming Languages (3 credits)\n- CS 280: Database Management Systems (3 credits)\n- CS 290: Artificial Intelligence (3 credits)\n- CS 295: Machine Learning (3 credits)\n- CS 300: Advanced Topics in Computer Science (3 credits)\n- CS 305: Computer Graphics (3 credits)\n- CS 310: Software Engineering (3 credits)\n- CS 315: Networks (3 credits)\n- CS 320: Parallel Computing (3 credits)\n- CS 325: Artificial Intelligence and Robotics (3 credits)\n- CS 330: Computer Security (3 credits)",
+        "The requirements for completing a senior project are based on the course content and objectives. Students must have completed all coursework by the end of their sophomore year to be eligible for this opportunity. The senior project is an independent research project that allows students to explore a topic of interest in depth. It requires a significant amount of time, effort, and resources. Students should work closely with their advisor to ensure they understand the requirements and expectations for the project. They should also prepare a proposal outlining the scope of the project, the methods they will use, and the expected outcome.",
+        "The degree requirements for graduation include completing 120 credit hours, including a minimum of 36 credit hours in general education courses and 48 credit hours in major-specific courses."
+      ]
+    }
+  },
+  "questions": [
+    "What are the core courses required for a computer science undergraduate degree?",
+    "Describe the rules for completing a senior project, including prerequisites.",
+    "What are the degree requirements for graduation?"
+  ]
+}

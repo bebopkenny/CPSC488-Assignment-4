@@ -1,0 +1,25 @@
+{
+  "methods": {
+    "lora": {
+      "trainable_params": 1126400,
+      "answers": [
+        "The core courses required for a computer science undergraduate degree include:\n1. Fundamentals of Computer Science (CS 101)\n2. Algorithms and Data Structures (CS 201, CS 202)\n3. Operating Systems (CS 251, CS 252)\n4. Programming Languages (CS 301, CS 302)\n5. Database Management Systems (CS 351, CS 352)\n6. Artificial Intelligence (CS 451, CS 452)\n7. Networking and Security (CS 491, CS 492)\n8. Advanced Topics in Computing (CS 493, CS 494)\nThese courses provide students with a strong foundation in computer science principles and techniques. They also prepare students to pursue advanced studies or careers in computer science.",
+        "The rules for completing a senior project are as follows:\n1. The project must be completed within the semester.\n2. The project must involve research and analysis of a topic related to the student's major or minor.\n3. The project must be presented in front of the faculty committee during the senior thesis defense.\n4. The project must be submitted on time and meet all requirements set by the faculty committee.\n5. The project should demonstrate proficiency in the student's chosen field of study.\n6. The project should also showcase the student's ability to work independently and collaboratively with others.\n7. The project should be original and creative, demonstrating the student's unique perspective and approach to solving problems.",
+        "The degree requirements for graduation include completing a minimum of 120 credit hours, including a minimum of 60 credit hours in core courses and a minimum of 45 credit hours in major-related courses."
+      ]
+    },
+    "prefix": {
+      "trainable_params": 2963200,
+      "answers": [
+        "of the best. Words and conditions of the website)\nWww.wowordespecially.complementarily.complementally.complement.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally.complementally",
+        "in commission)",
+        "Delivery\nDelivery Delivery."
+      ]
+    }
+  },
+  "questions": [
+    "What are the core courses required for a computer science undergraduate degree?",
+    "Describe the rules for completing a senior project, including prerequisites.",
+    "What are the degree requirements for graduation?"
+  ]
+}
